@@ -54,7 +54,7 @@ function drawGraph() {
 
     const node = rawData.nodes.find(n => n.id === current.id);
     if (node) {
-      if (current.level === 0) node.x = 0, node.y = 0, node.fixed = true;
+      if (current.level === 0) node.level = 0;
       nodes.push(node);
     }
 
@@ -62,7 +62,7 @@ function drawGraph() {
     for (const edge of connectedEdges) {
       const edgeKey = [edge.from, edge.to].sort().join("::");
       if (!visitedEdges.has(edgeKey)) {
-        edges.push({ ...edge, label: "", title: edge.title }); // Hover only
+        edges.push({ ...edge, label: "", title: edge.title });
         visitedEdges.add(edgeKey);
       }
 
@@ -80,31 +80,28 @@ function drawGraph() {
     edges: new vis.DataSet(edges)
   };
   const options = {
-    nodes: {
-      shape: 'image',
-      size: 60,
-      font: { size: 14, color: '#000', strokeWidth: 2, strokeColor: '#fff' }
+    layout: {
+      hierarchical: {
+        enabled: true,
+        direction: "UD",
+        sortMethod: "directed"
+      }
     },
     edges: {
-      arrows: 'to',
-      color: 'gray',
+      arrows: "to",
+      color: "gray",
       font: { size: 10 },
-      smooth: { type: 'dynamic' }
+      smooth: false
+    },
+    nodes: {
+      shape: "image",
+      size: 60,
+      font: { size: 14, color: "#000", strokeWidth: 2, strokeColor: "#fff" }
     },
     interaction: {
       hover: true
     },
-    layout: {
-      improvedLayout: true
-    },
-    physics: {
-      enabled: true,
-      solver: 'repulsion',
-      repulsion: {
-        nodeDistance: 400,
-        springLength: 500
-      }
-    }
+    physics: false
   };
   new vis.Network(container, data, options);
 }

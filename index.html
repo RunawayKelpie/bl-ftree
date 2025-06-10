@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BandLinx Visual Family Tree</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    #network {
+      width: 100%;
+      height: 800px;
+      border: 1px solid lightgray;
+      margin-top: 20px;
+    }
+    #controls {
+      margin: 20px;
+    }
+    select, input[type="number"] {
+      padding: 5px;
+      margin-left: 5px;
+    }
+    #error {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>🎸 BandLinx Visual Family Tree</h2>
+
+<div id="controls">
+  <label>Seed Band:
+    <select id="seedInput">
+      <option value="Mister Coffee">Mister Coffee</option>
+      <option value="Beacons">Beacons</option>
+      <option value="My Trainwreck of a Life">My Trainwreck of a Life</option>
+      <option value="Allan Hessey Big Band">Allan Hessey Big Band</option>
+      <option value="Area 7">Area 7</option>
+      <option value="Fiercebeard">Fiercebeard</option>
+    </select>
+  </label>
+  <label>Branch Depth:
+    <input type="number" id="depthInput" value="2" min="1" max="5">
+  </label>
+  <button onclick="drawGraph()">Build Tree</button>
+  <div id="error"></div>
+</div>
+
+<div id="network"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

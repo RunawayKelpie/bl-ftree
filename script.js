@@ -53,13 +53,16 @@ function drawGraph() {
     visitedNodes.add(current.id);
 
     const node = rawData.nodes.find(n => n.id === current.id);
-    if (node) nodes.push(node);
+    if (node) {
+      if (current.level === 0) node.x = 0, node.y = 0, node.fixed = true;
+      nodes.push(node);
+    }
 
     const connectedEdges = rawData.edges.filter(e => e.from === current.id || e.to === current.id);
     for (const edge of connectedEdges) {
       const edgeKey = [edge.from, edge.to].sort().join("::");
       if (!visitedEdges.has(edgeKey)) {
-        edges.push({ ...edge, label: "", title: edge.title }); // Hide label, keep hover
+        edges.push({ ...edge, label: "", title: edge.title }); // Hover only
         visitedEdges.add(edgeKey);
       }
 
@@ -79,7 +82,7 @@ function drawGraph() {
   const options = {
     nodes: {
       shape: 'image',
-      size: 50,
+      size: 60,
       font: { size: 14, color: '#000', strokeWidth: 2, strokeColor: '#fff' }
     },
     edges: {
@@ -97,7 +100,10 @@ function drawGraph() {
     physics: {
       enabled: true,
       solver: 'repulsion',
-      repulsion: { nodeDistance: 200, springLength: 300 }
+      repulsion: {
+        nodeDistance: 400,
+        springLength: 500
+      }
     }
   };
   new vis.Network(container, data, options);

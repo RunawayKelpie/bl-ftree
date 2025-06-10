@@ -59,7 +59,7 @@ function drawGraph() {
     for (const edge of connectedEdges) {
       const edgeKey = [edge.from, edge.to].sort().join("::");
       if (!visitedEdges.has(edgeKey)) {
-        edges.push(edge);
+        edges.push({ ...edge, label: "", title: edge.title }); // Hide label, keep hover
         visitedEdges.add(edgeKey);
       }
 
@@ -71,7 +71,7 @@ function drawGraph() {
   }
 
   const container = document.getElementById("network");
-  container.innerHTML = ""; // Clear previous graph
+  container.innerHTML = "";
   const data = {
     nodes: new vis.DataSet(nodes),
     edges: new vis.DataSet(edges)
@@ -80,29 +80,24 @@ function drawGraph() {
     nodes: {
       shape: 'image',
       size: 50,
-      font: {
-        size: 14,
-        color: '#000',
-        strokeWidth: 2,
-        strokeColor: '#fff'
-      }
+      font: { size: 14, color: '#000', strokeWidth: 2, strokeColor: '#fff' }
     },
     edges: {
       arrows: 'to',
       color: 'gray',
-      font: {
-        size: 10,
-        align: 'middle'
-      },
-      smooth: {
-        type: 'dynamic'
-      }
+      font: { size: 10 },
+      smooth: { type: 'dynamic' }
     },
     interaction: {
       hover: true
     },
+    layout: {
+      improvedLayout: true
+    },
     physics: {
-      stabilization: true
+      enabled: true,
+      solver: 'repulsion',
+      repulsion: { nodeDistance: 200, springLength: 300 }
     }
   };
   new vis.Network(container, data, options);
